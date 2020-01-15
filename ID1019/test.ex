@@ -22,7 +22,7 @@ defmodule Test do
 
   # Circle area
   def circle_area(r) do
-    :math.pi()*r*r
+    :math.pi()*:math.pow(r,2)
   end
 
 end
