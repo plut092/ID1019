@@ -93,7 +93,7 @@ defmodule Test do
 
   def len(l) do len(l, 0) end
   def len([], s) do s end
-  def len([h | t], s) do
+  def len([_ | t], s) do
     len(t, s+1)
   end
 
@@ -108,4 +108,22 @@ defmodule Test do
     [h | t] = l
     [h, h | duplicate(t)]
   end
+
+  def add(x, l) do
+    if add_contains(x,l) do
+      l
+    else
+      [x | l]
+    end
+  end
+  def add_contains(_,[]) do false end
+  def add_contains(x,l) do
+    [h | t] = l
+    if x == h do
+      true
+    else
+      add_contains(x, t)
+    end
+  end
+
 end
