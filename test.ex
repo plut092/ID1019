@@ -95,6 +95,17 @@ defmodule Test do
   def len([], s) do s end
   def len([h | t], s) do
     len(t, s+1)
-  end 
-  
+  end
+
+  def sum(l) do sum(l, 0) end
+  def sum([], s) do s end
+  def sum([h | t], s) do
+    sum(t, s + h)
+  end
+
+  def duplicate([]) do [] end
+  def duplicate(l) do
+    [h | t] = l
+    [h, h | duplicate(t)]
+  end
 end
