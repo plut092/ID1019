@@ -86,44 +86,26 @@ defmodule Test do
 
   # Find the nth element in a list
   def nth(0, [h | _]) do h end
-  def nth(n, l) do
-    [_ | t] = l
-    nth(n-1, t)
-  end
+  def nth(n, [_ | t]) do nth(n-1, t) end
 
-  def len(l) do len(l, 0) end
-  def len([], s) do s end
-  def len([_ | t], s) do
-    len(t, s+1)
-  end
+  def len([_ | t]) do 1 + len(t) end
+  def len([]) do 0 end
 
-  def sum(l) do sum(l, 0) end
-  def sum([], s) do s end
-  def sum([h | t], s) do
-    sum(t, s + h)
-  end
+  def sum([]) do 0 end
+  def sum([h | t]) do h + sum(t) end
 
   def duplicate([]) do [] end
-  def duplicate(l) do
-    [h | t] = l
-    [h, h | duplicate(t)]
-  end
+  def duplicate([h | t]) do [h, h | duplicate(t)] end
 
-  def add(x, l) do
-    if add_contains(x,l) do
-      l
-    else
-      [x | l]
-    end
-  end
-  def add_contains(_,[]) do false end
-  def add_contains(x,l) do
-    [h | t] = l
-    if x == h do
-      true
-    else
-      add_contains(x, t)
-    end
-  end
+  def add(x, []) do [x] end
+  def add(x, [x | t]) do [x | t] end
+  def add(x , [h | t]) do [h | add(x, t)] end
+
+  def remove(_, []) do [] end
+  def remove(x, [x | t]) do t end
+  def remove(x, [h | t]) do [h | remove(x, t)] end
+
+  def unique()
+  def unique([h | t]) do [h | unique(t)] end
 
 end
