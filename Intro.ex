@@ -108,4 +108,6 @@
     def unique([]) do [] end
     def unique([h | t]) do [h | unique(remove(h, t))] end
 
+    def pack([h | t]) do  end
+
 end
