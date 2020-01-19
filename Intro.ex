@@ -108,6 +108,21 @@
     def unique([]) do [] end
     def unique([h | t]) do [h | unique(remove(h, t))] end
 
-    def pack([h | t]) do  end
+    def pack([]) do [] end
+    def pack([x | t]) do 
+        {all_x, rest} = all_same(x, t, [x], [])
+        [all_x | pack(rest)]
+    end
+
+    def all_same(_, [], all_x, rest) do {all_x, rest} end
+    def all_same(x, [x | t], all_x, rest) do
+        all_same(x, t, [x | all_x], rest)
+    end
+    def all_same(x, [h | t], all_x, rest) do 
+        all_same(x, t, all_x, [h | rest])
+    end
 
 end
+
+#   Test.pack([:a, :a, :b, :c, :b, :a, :c])
+#   [[:a, :a, :a], [:b, :b], [:c, :c]]
