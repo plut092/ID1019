@@ -122,7 +122,36 @@
         all_same(x, t, all_x, [h | rest])
     end
 
+    def reverse([]) do [] end
+    def reverse([h | t]) do reverse(t) ++ [h] end
+
+    # Improved reverse()
+    def reverse_i(l) do reverse_i(l, []) end
+    def reverse_i([], rev) do rev end
+    def reverse_i([h |t], rev) do [reverse_i(t) | [h | rev]] end
+
+    def insert(element, []) do [element] end
+    def insert(element, [h | t]) do
+        cond do
+            element < h ->
+                [element | [h | t]]
+            element > h ->
+                [h | insert(element, t)]
+        end
+    end
+
+    def isort(l) do isort(l, []) end
+    def isort(list, sorted) do 
+        case list do
+            [] ->
+                []
+            [h | t] ->
+                isort(t, insert(h, sorted))
+        end
+    end
+
 end
 
-#   Test.pack([:a, :a, :b, :c, :b, :a, :c])
-#   [[:a, :a, :a], [:b, :b], [:c, :c]]
+#   Test.isort([3,2,5,6,1,2,3])
+#   Test.reverse([1,2,3,4])
+#   Test.insert(4, [1,2,3])
