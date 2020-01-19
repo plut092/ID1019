@@ -141,11 +141,11 @@
     end
 
     def isort(l) do isort(l, []) end
-    def isort(list, sorted) do 
-        case list do
+    def isort([h | t], sorted) do 
+        case h do
             [] ->
                 []
-            [h | t] ->
+            [h |t] ->
                 isort(t, insert(h, sorted))
         end
     end
