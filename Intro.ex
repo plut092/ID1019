@@ -154,28 +154,30 @@
         case l do
             [] ->
                 []
-            ... ->
-                {.., ...} = msplit(l, [], [])
-                merge(msort(...), msort(...))
+            [x] ->
+                [x]
+            _ ->
+                {l1, l2} = msplit(l, [], [])
+                merge(msort(l1), msort(l2))
         end
     end
-    def merge(..., ...) do ... end
-    def merge(..., ...) do ... end
-    def merge(..., ...) do
-        if ...
-            merge(.., ...)
+    def merge(x, []) do x end
+    def merge([], x) do x end
+    def merge([h1|t1], [h2|t2]) do
+        if h1 > h2 do
+            [h1 | merge(t1, [h2 | t2])]
         else
-            merge(.., ...)
+            [h2 | merge([h1 | t1], [t2])]
         end
     end
-    def msplit(..., ..., ...) do
-        case ... do
-            ... ->
-                {..., ...}
-            ... ->
-                msplit(..., ..., ...)
+    def msplit(list, l1, l2) do
+        case list do
+            [] ->
+                {l1, l2}
+            [h | t] ->
+                msplit(t, [h | l2], l1)
         end
-    end
+    end  
 
 end
 
