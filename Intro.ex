@@ -164,10 +164,10 @@
     def merge(x, []) do x end
     def merge([], x) do x end
     def merge([h1|t1], [h2|t2]) do
-        if h1 > h2 do
+        if h1 < h2 do
             [h1 | merge(t1, [h2 | t2])]
         else
-            [h2 | merge([h1 | t1], [t2])]
+            [h2 | merge([h1 | t1], t2)]
         end
     end
     def msplit(list, l1, l2) do
