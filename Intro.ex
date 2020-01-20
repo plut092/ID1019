@@ -150,6 +150,33 @@
         end
     end
 
+    def msort(l) do
+        case l do
+            [] ->
+                []
+            ... ->
+                {.., ...} = msplit(l, [], [])
+                merge(msort(...), msort(...))
+        end
+    end
+    def merge(..., ...) do ... end
+    def merge(..., ...) do ... end
+    def merge(..., ...) do
+        if ...
+            merge(.., ...)
+        else
+            merge(.., ...)
+        end
+    end
+    def msplit(..., ..., ...) do
+        case ... do
+            ... ->
+                {..., ...}
+            ... ->
+                msplit(..., ..., ...)
+        end
+    end
+
 end
 
 #   Test.isort([3,2,5,6,1,2,3])
