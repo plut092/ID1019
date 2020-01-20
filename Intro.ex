@@ -164,7 +164,7 @@
     def merge(x, []) do x end
     def merge([], x) do x end
     def merge([h1|t1], [h2|t2]) do
-        if h1 < h2 do
+        if h1 <= h2 do
             [h1 | merge(t1, [h2 | t2])]
         else
             [h2 | merge([h1 | t1], t2)]
@@ -177,7 +177,30 @@
             [h | t] ->
                 msplit(t, [h | l2], l1)
         end
-    end  
+    end
+
+    def qsort([]) do [] end
+    def qsort([x]) do [x] end
+    def qsort([p | l]) do
+        {l1, l2} = qsplit(p, l, [], [])
+        small = qsort(l1)
+        large = qsort(l2)
+        append(small, [p | large])
+    end
+    def qsplit(_, [], small, large) do {small, large} end
+    def qsplit(p, [h | t], small, large) do
+        if h <= p do
+            qsplit(p, t, [h | small], large)
+        else
+            qsplit(p, t, small, [h | large])
+        end
+    end
+    def append(small, large) do
+    case small do
+        [] -> large
+        [h | t] -> [h | append(t, large)]
+    end
+end
 
 end
 
