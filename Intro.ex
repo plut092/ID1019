@@ -135,17 +135,17 @@
         cond do
             element < h ->
                 [element | [h | t]]
-            element > h ->
+            element >= h ->
                 [h | insert(element, t)]
         end
     end
 
     def isort(l) do isort(l, []) end
-    def isort([h | t], sorted) do 
-        case h do
+    def isort(l, sorted) do 
+        case l do
             [] ->
-                []
-            [h |t] ->
+                sorted
+            [h | t] ->
                 isort(t, insert(h, sorted))
         end
     end
