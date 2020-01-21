@@ -30,8 +30,8 @@ defmodule Test do
     def delete(e, {:node, e, :nil, right}) do right end
     def delete(e, {:node, e, left, :nil}) do left end
     def delete(e, {_node, e, left, right}) do
-        {_, left_value} = left
-        {:node, left_value, :nil, right}
+        {_, left_value} = reightmost(left)
+        {:node, left_value, delete(left_value, left), right}
     end
     def delete(e, {_node, v, left, right}) when e < v do
         {:node, v,  delete(e, left),  right}
@@ -39,20 +39,8 @@ defmodule Test do
     def delete(e, {_node, v, left, right})  do
         {:node, v,  left,  delete(e, right)}
     end
+    def reightmost({:leaf, e}) do {:leaf, e} end
+    def reightmost(:nil) do {:leaf, :nil} end
+    def reightmost({:node, _, _ , right}) do  reightmost(right)  end
 
 end
-
-# :nil                            # the empty tree
-# {:leaf, value}                  # a leaf
-# {:node, value, left, right}     # node
-
-
-#                        4
-#                2               {:node, 6, {:leaf, 5}, {:leaf, 7}}
-#                    3       5       7
-
-##################################################                    
-
-#                        4
-#                2               {:node, 5, :nil, {:leaf, 7}}
-#                    3               7
