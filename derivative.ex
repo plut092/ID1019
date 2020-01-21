@@ -14,15 +14,33 @@ defmodule Test do
 
     def insert(e, :nil) do {:leaf, e} end
     def insert(e, {:leaf, v}) when e < v  do 
-        {:node, v, {:leaf, e}, :nil} end
+        {:node, v, {:leaf, e}, :nil}
+    end
     def insert(e, {:leaf, v}) do 
-        {:node, v, :nil, {:right, e}} end
+        {:node, v, :nil, {:leaf, e}} 
+    end
     def insert(e, {:node, v, left, right }) when e < v do
         {:node, v, insert(e, left), right} 
     end
     def insert(e, {:node, v, left, right })  do
         {:node, v, left, insert(e, right)}
     end
+
+    def delete(e, {:leaf, e}) do :nil end
+    def delete(e, {:node, e, :nil, right}) do right end
+    def delete(e, {:node, e, left, :nil}) do left end
+    def delete(e, {node, e, left, right}) do
+    :
+    hmmm, this is tricky
+    :
+    end
+    def delete(e, {node, v, left, right}) when e < v do
+        {:node, v,  ...,  ...}
+    end
+    def delete(e, {node, v, left, right})  do
+        {:node, v,  ...,  ...}
+    end
+
 end
 
 # :nil                            # the empty tree
