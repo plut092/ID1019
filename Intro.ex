@@ -122,13 +122,13 @@
         all_same(x, t, all_x, [h | rest])
     end
 
-    def reverse([]) do [] end
-    def reverse([h | t]) do reverse(t) ++ [h] end
+    def nreverse([]) do [] end
+    def nreverse([h | t]) do nreverse(t) ++ [h] end
 
     # Improved reverse()
-    def reverse_i(l) do reverse_i(l, []) end
-    def reverse_i([], rev) do rev end
-    def reverse_i([h |t], rev) do [reverse_i(t) | [h | rev]] end
+    def reverse(l) do reverse(l, []) end
+    def reverse([], rev) do rev end
+    def reverse([h |t], rev) do [reverse(t) | [h | rev]] end
 
     def insert(element, []) do [element] end
     def insert(element, [h | t]) do
@@ -196,14 +196,41 @@
         end
     end
     def append(small, large) do
-    case small do
-        [] -> large
-        [h | t] -> [h | append(t, large)]
+        case small do
+            [] -> large
+            [h | t] -> [h | append(t, large)]
+        end
     end
-end
+
+    def bench() do
+        ls = [16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192]
+        n = 100
+        # bench is a closure: a function with an environment.
+        bench = fn(l) ->
+            seq = Enum.to_list(1..l)
+            tn = time(n, fn -> nreverse(seq) end)
+            tr = time(n, fn -> reverse(seq) end)
+            :io.format("length: ~10w nrev: ~8w us rev: ~8w us~n", [l, tn, tr])
+        end
+        # We use the library function Enum.each that will call
+        # bench(l) for each element l in ls
+        Enum.each(ls, bench)
+    end
+    # Time the execution time of the a function.
+    def time(n, fun) do
+        start = System.monotonic_time(:milliseconds)
+        loop(n, fun)
+        stop = System.monotonic_time(:milliseconds)
+        stop - start
+    end
+    # Apply the function n times.
+    def loop(n, fun) do
+        if n == 0 do
+            :ok
+        else
+            fun.()
+            loop(n - 1, fun)
+        end
+    end
 
 end
-
-#   Test.isort([3,2,5,6,1,2,3])
-#   Test.reverse([1,2,3,4])
-#   Test.insert(4, [1,2,3])
