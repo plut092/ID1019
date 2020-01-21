@@ -29,16 +29,15 @@ defmodule Test do
     def delete(e, {:leaf, e}) do :nil end
     def delete(e, {:node, e, :nil, right}) do right end
     def delete(e, {:node, e, left, :nil}) do left end
-    def delete(e, {node, e, left, right}) do
-    :
-    hmmm, this is tricky
-    :
+    def delete(e, {_node, e, left, right}) do
+        {_, left_value} = left
+        {:node, left_value, :nil, right}
     end
-    def delete(e, {node, v, left, right}) when e < v do
-        {:node, v,  ...,  ...}
+    def delete(e, {_node, v, left, right}) when e < v do
+        {:node, v,  delete(e, left),  right}
     end
-    def delete(e, {node, v, left, right})  do
-        {:node, v,  ...,  ...}
+    def delete(e, {_node, v, left, right})  do
+        {:node, v,  left,  delete(e, right)}
     end
 
 end
@@ -46,3 +45,14 @@ end
 # :nil                            # the empty tree
 # {:leaf, value}                  # a leaf
 # {:node, value, left, right}     # node
+
+
+#                        4
+#                2               {:node, 6, {:leaf, 5}, {:leaf, 7}}
+#                    3       5       7
+
+##################################################                    
+
+#                        4
+#                2               {:node, 5, :nil, {:leaf, 7}}
+#                    3               7
