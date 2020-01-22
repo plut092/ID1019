@@ -30,7 +30,8 @@ defmodule Test do
     def delete(e, {:node, e, :nil, right}) do right end
     def delete(e, {:node, e, left, :nil}) do left end
     def delete(e, {_node, e, left, right}) do
-        {_, left_value} = reightmost(left)
+        {type, left_value} = reightmost(left)
+        if {:not_a_node, :nil} do
         {:node, left_value, delete(left_value, left), right}
     end
     def delete(e, {_node, v, left, right}) when e < v do
@@ -40,7 +41,7 @@ defmodule Test do
         {:node, v,  left,  delete(e, right)}
     end
     def reightmost({:leaf, e}) do {:leaf, e} end
-    def reightmost(:nil) do {:leaf, :nil} end
+    def reightmost(:nil) do {:not_a_node, :nil} end
     def reightmost({:node, _, _ , right}) do  reightmost(right)  end
 
 end
