@@ -1,4 +1,7 @@
-defmodule Test do
+# Johan Engström
+# 2020-01-22 22:01:09
+
+defmodule Calc do
 
     @type literal() :: {:const, number()}
         | {:const, atom()}
@@ -8,18 +11,29 @@ defmodule Test do
         | {:mul, expr(), expr()}
         | literal()
 
+    def eval_test1() do
+        eval({:var, :x}, [{:bind, :x, 5}])
+    end
+    def eval_test2() do 
+        eval({:add, {:var, :x}, {:var, :y}}, 
+        [{:bind, :x, 5}, {:bind, :y, 2}])
+    end
+
     def eval({:int, n}), do: n
     def eval({:var, x}), do: x
     def eval({:add, a, b}), do: eval(a) + eval(b)
     def eval({:mul, a, b}), do: eval(a) * eval(b)
     def eval({:sub, a, b}), do: eval(a) - eval(b)
-    def eval({:var, name}, bindings), do: 
-        eval(lookup({:var, name}, bindings))
-
+    def eval({:var, name}, bindings), do: lookup(name, bindings)
+    def eval({var, {_, a}, {_, b}}, bindings), do: 
+        eval({var, 
+            {:var, lookup(a, bindings)}, 
+            {:var, lookup(b, bindings)}})
+    
+    # {:var, :x} , bindings -> :x = 5
     def lookup(var, [{:bind, var, value} | _]), do: value
     def lookup(var, [_ | rest]), do: lookup(var, rest)
 
-    
     def deriv({:const, _}, _), do: {:const, 0}
     def deriv({:var, v}, v), do: {:const, 1}
     def deriv({:var, _y}, _), do: {:const, 0}

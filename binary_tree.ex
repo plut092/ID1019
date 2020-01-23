@@ -1,4 +1,7 @@
-defmodule Test do
+# Johan Engström
+# 2020-01-22 22:00:50
+
+defmodule BT do
 
     def member(_, :nil) do :no end
     def member(e, {:leaf, e}) do :yes end
@@ -29,10 +32,8 @@ defmodule Test do
     def delete(e, {:leaf, e}) do :nil end
     def delete(e, {:node, e, :nil, right}) do right end
     def delete(e, {:node, e, left, :nil}) do left end
-    def delete(e, {_node, e, left, right}) do
-        {type, left_value} = reightmost(left)
-        if {:not_a_node, :nil} do
-        {:node, left_value, delete(left_value, left), right}
+    def delete(e, {:node, e, left, right}) do
+        {:node, reightmost(left), delete(reightmost(left), left), right}   
     end
     def delete(e, {_node, v, left, right}) when e < v do
         {:node, v,  delete(e, left),  right}
@@ -40,8 +41,9 @@ defmodule Test do
     def delete(e, {_node, v, left, right})  do
         {:node, v,  left,  delete(e, right)}
     end
-    def reightmost({:leaf, e}) do {:leaf, e} end
-    def reightmost(:nil) do {:not_a_node, :nil} end
+
+    def reightmost({:leaf, e}) do e end
+    def reightmost({:node, e, _ , :nil}) do e end
     def reightmost({:node, _, _ , right}) do  reightmost(right)  end
 
 end
