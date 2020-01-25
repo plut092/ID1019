@@ -56,6 +56,7 @@ defmodule Huffman do
         freq(rest, update(char, freq))
     end
 
+    # hELPING FUNCTION - freq()
     # if freq list is empty, add a tuple with frequency of that char
     def update(char, []), do: [{char, 1}]
     # found the tuple with char_freq for char and update
