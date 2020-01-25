@@ -10,35 +10,29 @@ defmodule Huffman do
         'this is something that we should encode'
     end
     def test do
-        sample = sample()
+        sample = text()
         tree = tree(sample)
-        encode = encode_table(tree)
-        decode = decode_table(tree)
-        text = text()
-        seq = encode(text, encode)
-        decode(seq, decode)
+        #encode = encode_table(tree)
+        #decode = decode_table(tree)
+        #text = text()
+        #seq = encode(text, encode)
+        #decode(seq, decode)
     end
     #  create a Huffman tree given a sample text
     def tree(sample) do
+        
         freq = freq(sample)
         huffman(freq)
     end
-    # building the Huffman tree from freq list
-    # make leafs of two most infreq chars and a node with added freqs
-    def huffman(freq) do
-        huffman(freq, {})
+    # Building the Huffman tree from freq list:
+    # Take the two least frequent elements and make a node until 
+    # the list has one node
+    def huffman([{tree, _}]), do: tree
+    def huffman([{e1, f1}, {e2, f2} | t]) do
+        f = f1 + f2
+        huffman(insert({{e1, e2}, f}, t))
     end
-    # freq list has been made into the tree
-    def huffman([], tree)do
-        tree
-    end
-    # the tree is empty and the first node is put in
-    def huffman(freq, :nil) do
-        huffman(remove(most_infreq(freq)), insert(most_infreq(freq)))
-    end
-    def huffman(freq, tree) do
-        
-    end
+
     #  create an encoding table containing the mapping from characters
     #  to codes given a Huffman tree
     def encode_table(tree) do
@@ -64,17 +58,17 @@ defmodule Huffman do
     def freq(sample) do
         freq(sample, [])
     end
-    # freq list is completed
-    def freq([], freq), do: freq
-    # iterating through the sample and updating frequency of chars
+    # freq list is completed when sample is []
+    def freq([], freq), do: isort(freq)
+    # iterating through the sample and update frequency of chars
     def freq([char | rest], freq) do
         freq(rest, update(char, freq))
     end
 
-    # hELPING FUNCTION - freq()
-    # if freq list is empty, add a tuple with frequency of that char
+    # HELPING FUNCTION - freq()
+    # if freq list is empty, add a tuple with the char and freq=1
     def update(char, []), do: [{char, 1}]
-    # found the tuple with char_freq for char and update
+    # the tuple {char, char_freq}was found and updated
     def update(char, [{char, char_freq} | t]) do
         [{char, 1 + char_freq} | t]
     end
@@ -83,18 +77,26 @@ defmodule Huffman do
         [h | update(char, t)]
     end
 
-    # BT insertion
-    def insert(e, :nil) do {:leaf, e} end
-    def insert(e, {:leaf, v}) when e < v  do 
-        {:node, v, {:leaf, e}, :nil}
+    #HELPING FUNCTION - freq()
+    def remove(_, []), do: []
+    def remove(x, [x | t]), do: t
+    def remove(x, [h | t]), do: [h | remove(x, t)]
+
+    #   {c, f} []
+    def insert(e, []) do [e] end
+    #   {e1, f1} & {e2, f2} compared
+    def insert({e1, f1}, [{e2, f2} | t]) when f1 <= f2 do
+        [{e1, f1} | [{e2, f2} | t]]
     end
-    def insert(e, {:leaf, v}) do 
-        {:node, v, :nil, {:leaf, e}} 
+    def insert({e1, f1}, [{e2, f2} | t]) do
+        [{e2, f2} | insert({e1, f1}, t)]
     end
-    def insert(e, {:node, v, left, right }) when e < v do
-        {:node, v, insert(e, left), right} 
-    end
-    def insert(e, {:node, v, left, right })  do
-        {:node, v, left, insert(e, right)}
+
+    # insertion sort
+    def isort(l) do isort(l, []) end
+    def isort([], sorted), do: sorted
+    def isort([h | t], sorted) do
+        isort(t, insert(h, sorted))
     end
 end
+{{},{}}
