@@ -23,7 +23,22 @@ defmodule Huffman do
         freq = freq(sample)
         huffman(freq)
     end
-    def huffman(freq), do: "huffman"
+    # building the Huffman tree from freq list
+    # make leafs of two most infreq chars and a node with added freqs
+    def huffman(freq) do
+        huffman(freq, {})
+    end
+    # freq list has been made into the tree
+    def huffman([], tree)do
+        tree
+    end
+    # the tree is empty and the first node is put in
+    def huffman(freq, :nil) do
+        huffman(remove(most_infreq(freq)), insert(most_infreq(freq)))
+    end
+    def huffman(freq, tree) do
+        
+    end
     #  create an encoding table containing the mapping from characters
     #  to codes given a Huffman tree
     def encode_table(tree) do
@@ -68,4 +83,18 @@ defmodule Huffman do
         [h | update(char, t)]
     end
 
+    # BT insertion
+    def insert(e, :nil) do {:leaf, e} end
+    def insert(e, {:leaf, v}) when e < v  do 
+        {:node, v, {:leaf, e}, :nil}
+    end
+    def insert(e, {:leaf, v}) do 
+        {:node, v, :nil, {:leaf, e}} 
+    end
+    def insert(e, {:node, v, left, right }) when e < v do
+        {:node, v, insert(e, left), right} 
+    end
+    def insert(e, {:node, v, left, right })  do
+        {:node, v, left, insert(e, right)}
+    end
 end
