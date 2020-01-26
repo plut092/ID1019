@@ -10,7 +10,7 @@ defmodule Huffman do
         'this is something that we should encode'
     end
     def test do
-        sample = text()
+        sample = sample()
         tree = tree(sample)
         #encode = encode_table(tree)
         #decode = decode_table(tree)
@@ -29,8 +29,7 @@ defmodule Huffman do
     # the list has one node
     def huffman([{tree, _}]), do: tree
     def huffman([{e1, f1}, {e2, f2} | t]) do
-        f = f1 + f2
-        huffman(insert({{e1, e2}, f}, t))
+        huffman(insert({{e1, e2}, f1+f2}, t))
     end
 
     #  create an encoding table containing the mapping from characters
@@ -99,4 +98,3 @@ defmodule Huffman do
         isort(t, insert(h, sorted))
     end
 end
-{{},{}}
