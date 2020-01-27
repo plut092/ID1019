@@ -12,7 +12,7 @@ defmodule Huffman do
     def test do
         sample = sample()
         tree = tree(sample)
-        #encode = encode_table(tree)
+        encode = encode_table(tree)
         #decode = decode_table(tree)
         #text = text()
         #seq = encode(text, encode)
@@ -34,9 +34,14 @@ defmodule Huffman do
 
     #  create an encoding table containing the mapping from characters
     #  to codes given a Huffman tree
-    def encode_table(tree) do
-    # To implement...
+    def encode_table(tree), do: encode_table(tree, [], [])
+    def encode_table({}, table, _), do: table
+    def encode_table({left, right}, table, code) do
+        encode_table(right, (encode_table(left, table, [0|code])), [1|code])
     end
+    def encode_table(char, table, code), do: [{char, reverse(code)} | table]
+
+
     #  create an decoding table containing the mapping
     #  from codes to characters given a Huffman tree.
     def decode_table(tree) do
@@ -44,8 +49,11 @@ defmodule Huffman do
     end
     #  encode the text using the mapping in the table, return a 
     #  sequence of bits.
-    def encode(text, table) do
-    # To implement...
+    def encode(text, table), do: encode(text, table,[])
+    def encode([h | t], table, encoded), do: 
+
+    def getcode(c, table) do
+        
     end
     #  decode the bit sequence using the mapping in table, return a
     #  text.
@@ -80,6 +88,11 @@ defmodule Huffman do
     def remove(_, []), do: []
     def remove(x, [x | t]), do: t
     def remove(x, [h | t]), do: [h | remove(x, t)]
+
+    #HELPING FUNCTION - encode_table()
+    def reverse(l) do reverse(l, []) end
+    def reverse([], rev) do rev end
+    def reverse([h |t], rev) do reverse(t, [h | rev]) end
 
     #   {c, f} []
     def insert(e, []) do [e] end
