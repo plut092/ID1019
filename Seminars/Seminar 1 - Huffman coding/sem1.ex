@@ -49,17 +49,30 @@ defmodule Huffman do
     end
     #  encode the text using the mapping in the table, return a 
     #  sequence of bits.
-    def encode(text, table), do: encode(text, table,[])
-    def encode([h | t], table, encoded), do: 
-
-    def getcode(c, table) do
-        
+    def encode([], _), do: []
+    def encode([char | t], table) do
+        append(getcode(char, table), encode(t, table))
     end
+
+    def getcode(char, [{char, code} | t]), do: code
+    def getcode(char, [{_, code} | t]), do: getcode(char, t)
     #  decode the bit sequence using the mapping in table, return a
     #  text.
-    def decode(seq, tree) do
-    # To implement...
+    def decode([], _), do: []
+    def decode(seq, table) do
+        {char, rest} = decode_char(seq, 1, table)
+        [char | decode(rest, table)]
     end
+    def decode_char(seq, n, table) do
+        {code, rest} = Enum.split(seq, n)
+        case List.keyfind(table, code, 1) do
+            ... ->
+            ...;
+            nil ->
+                decode_char(..., ..., table)
+        end
+    end
+
 
     # creating a list with the frequency of the chars
     def freq(sample) do
@@ -93,6 +106,14 @@ defmodule Huffman do
     def reverse(l) do reverse(l, []) end
     def reverse([], rev) do rev end
     def reverse([h |t], rev) do reverse(t, [h | rev]) end
+
+    #HELPING FUNCTION - encode()
+    def append(left, right) do
+        case left do
+            [] -> right
+            [h | t] -> [h | append(t, right)]
+        end
+    end
 
     #   {c, f} []
     def insert(e, []) do [e] end
