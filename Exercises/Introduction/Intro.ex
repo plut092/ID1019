@@ -128,7 +128,7 @@ defmodule Test do
     # Improved reverse()
     def reverse(l) do reverse(l, []) end
     def reverse([], rev) do rev end
-    def reverse([h |t], rev) do [reverse(t) | [h | rev]] end
+    def reverse([h |t], rev) do reverse(t, [h | rev]) end
 
     def insert(element, []) do [element] end
     def insert(element, [h | t]) do
